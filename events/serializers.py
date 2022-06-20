@@ -14,7 +14,7 @@ class EventDetailSerializer(serializers.ModelSerializer):
 
     title = serializers.CharField(max_length=255)
     location = serializers.CharField(max_length=255)
-    created_at = serializers.DateTimeField()
+    created_at = serializers.DateTimeField('date created')
 
     class Meta:
         model=Event
