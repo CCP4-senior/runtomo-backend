@@ -10,8 +10,8 @@ class ProfileSerializer(serializers.ModelSerializer):
         model = Profile
         fields = ['runner_type']
 
-# class UserSerializer(serializers.ModelSerializer):
-#     profile = ProfileSerializer(required=True)
-#     class Meta:
-#         model = User
-#         fields = ['username', 'email', 'password']
+class UserSerializer(serializers.ModelSerializer):
+    profile = ProfileSerializer(required=True)
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'profile']
