@@ -21,12 +21,12 @@ class EventCreateListView(generics.GenericAPIView):
     
     serializer_class = serializers.EventCreationSerializer
     queryset = Event.objects.all()
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticated]
 
     @swagger_auto_schema(operation_summary="List all events created by users")
     def get(self, request):
 
-        events = Event.objects.all()
+        events = Event.objects.all().order_by('-created_at')
 
         serializer = self.serializer_class(instance=events, many=True)
 
@@ -51,7 +51,7 @@ class EventCreateListView(generics.GenericAPIView):
 
 class EventDetailView(generics.GenericAPIView):
     serializer_class = serializers.EventDetailSerializer
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAuthenticated]
 
     @swagger_auto_schema(operation_summary="Retrieve an event")
     def get(self, request, event_id):
@@ -89,8 +89,9 @@ class EventDetailView(generics.GenericAPIView):
 
 class UserEventsView(generics.GenericAPIView):
     serializer_class = serializers.EventDetailSerializer
-
+    permission_classes = [IsAuthenticated]
     @swagger_auto_schema(operation_summary="Get specific events by a specific user")
+
     def get(self, request, user_id):
         user = User.objects.get(pk=user_id)
 
@@ -103,7 +104,7 @@ class UserEventsView(generics.GenericAPIView):
 
 class UserEventDetails(generics.GenericAPIView):
     serializer_class = serializers.EventDetailSerializer
-
+    permission_classes = [IsAuthenticated]
     @swagger_auto_schema(operation_summary="Get a specific event by a specific user")
     def get(self, request, user_id, event_id):
         user = User.objects.get(pk=user_id)
