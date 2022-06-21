@@ -1,5 +1,5 @@
 from dataclasses import field
-from .models import Profile
+from .models import Profile, RunnerType
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
@@ -14,4 +14,9 @@ class UserSerializer(serializers.ModelSerializer):
     profile = ProfileSerializer(required=True)
     class Meta:
         model = User
-        fields = ['username', 'email', 'profile']
+        fields = ['id', 'username', 'email', 'profile']
+
+class RunnerTypeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RunnerType
+        fields = ['id', 'name']
