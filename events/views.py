@@ -104,7 +104,7 @@ class UserEventsView(generics.GenericAPIView):
 
 class UserEventDetails(generics.GenericAPIView):
     serializer_class = serializers.EventDetailSerializer
-
+    permission_classes = [IsAuthenticated]
     @swagger_auto_schema(operation_summary="Get a specific event by a specific user")
     def get(self, request, user_id, event_id):
         user = User.objects.get(pk=user_id)
