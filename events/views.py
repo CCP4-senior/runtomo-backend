@@ -26,7 +26,7 @@ class EventCreateListView(generics.GenericAPIView):
     @swagger_auto_schema(operation_summary="List all events created by users")
     def get(self, request):
 
-        events = Event.objects.all().order_by('-created_date')
+        events = Event.objects.all().order_by('-created_at')
 
         serializer = self.serializer_class(instance=events, many=True)
 
