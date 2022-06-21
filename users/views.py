@@ -22,6 +22,17 @@ class UserListView(generics.GenericAPIView):
 
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
+class UserDetailView(generics.GenericAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = serializers.UserSerializer
+
+    @swagger_auto_schema(operation_summary="Retrieve a user by username")
+    def get(self, request, username):
+
+        users = get_object_or_404(User, username=username)
+        serializer = self.serializer_class(instance=users)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+
 class RunnerTypeListView(generics.GenericAPIView):
     serializer_class = serializers.RunnerTypeSerializer
 
