@@ -5,5 +5,5 @@ from .models import Event
 
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
-    list_display = ['title', 'location', 'created_at']
+    list_display = ['title', 'location', 'created_at', 'ward']
     list_filter = ['location', 'created_at']
