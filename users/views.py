@@ -44,4 +44,27 @@ class RunnerTypeListView(generics.GenericAPIView):
         serializer = self.serializer_class(instance=runner_types, many=True)
 
         return Response(data=serializer.data, status=status.HTTP_200_OK)
+
+
+class ProfileCreateListView(generics.GenericAPIView):
+    serializer_class = serializers.ProfileSerializer
+    queryset = Profile.objects.all()
+    @swagger_auto_schema(operation_summary="List all profiles")
+    def get(self, request):
+        profiles = Profile.objects.all()
+        serializer = self.serializer_class(instance=profiles, many=True)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+
+    @swagger_auto_schema(operation_summary="Create a new Profile+")
+    def post(self, request, id):
+        data = request.data
+
+        serializer = self.serializer_class(data=data)
+
+        if serializer.is_valid():
+            serializer.save(user_id=id)
+            return Response(data=serializer.data, status=status.HTTP_201_CREATED)
+
+        return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
       
