@@ -27,9 +27,9 @@ class UserDetailView(generics.GenericAPIView):
     serializer_class = serializers.UserDetailSerializer
 
     @swagger_auto_schema(operation_summary="Retrieve a user by username")
-    def get(self, request, username):
+    def get(self, request, id):
 
-        users = get_object_or_404(User, username=username)
+        users = get_object_or_404(User, pk=id)
         serializer = self.serializer_class(instance=users)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
