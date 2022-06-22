@@ -24,3 +24,16 @@ class UserCreateView(generics.GenericAPIView):
             return Response(data=serializer.data, status=status.HTTP_201_CREATED)
 
         return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+# class UserUpdateView(generics.GenericAPIView):
+#     serializer_class = serializers.UserUpdateSerializer    
+#     @swagger_auto_schema(operation_summary="Update a user account")
+#     def put(self, request, id):
+#         user = self.get_object(id)
+#         serializer = self.serializer_class(user, data=request.data)
+
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(data=serializer.data, status=status.HTTP_201_CREATED)
+
+#         return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)

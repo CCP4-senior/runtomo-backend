@@ -7,6 +7,7 @@ from rest_framework import serializers
 User=get_user_model()
 
 class RunnerTypeSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField()
     class Meta:
         model = RunnerType
         fields = ['id', 'name']
