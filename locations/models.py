@@ -1,5 +1,5 @@
 from django.db import models
-from location_type.models import LocationType
+from location_types.models import LocationType
 
 class Location(models.Model):
     type = models.ForeignKey(LocationType, on_delete=models.CASCADE)

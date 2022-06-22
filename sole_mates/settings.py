@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'locations',
+    'location_types',
     'authentication.apps.AuthenticationConfig',
     'events.apps.EventsConfig',
 
