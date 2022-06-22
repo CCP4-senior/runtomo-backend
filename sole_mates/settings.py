@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'location_types',
     'authentication.apps.AuthenticationConfig',
     'events.apps.EventsConfig',
+    'users.apps.UsersConfig',
 
     #third_party_apps
     'rest_framework',
