@@ -48,3 +48,5 @@ class UserCreationSerializer(serializers.ModelSerializer):
         )
 
         return user
+    
+    # def update(self, validated_data):
