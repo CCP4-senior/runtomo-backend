@@ -24,7 +24,7 @@ class UserListView(generics.GenericAPIView):
 
 class UserDetailView(generics.GenericAPIView):
     permission_classes = [IsAuthenticated]
-    serializer_class = serializers.UserSerializer
+    serializer_class = serializers.UserDetailSerializer
 
     @swagger_auto_schema(operation_summary="Retrieve a user by username")
     def get(self, request, username):
