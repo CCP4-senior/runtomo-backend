@@ -16,7 +16,7 @@ class ProfileSerializer(serializers.ModelSerializer):
     runner_type = RunnerTypeSerializer(required=True)
     class Meta:
         model = Profile
-        fields = ['runner_type']
+        fields = ['user_id','runner_type']
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
