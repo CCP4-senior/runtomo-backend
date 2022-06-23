@@ -11,11 +11,25 @@ class EventUserDetailView(generics.GenericAPIView):
     permission_classes = [IsAuthenticated]
 
     @swagger_auto_schema(operation_summary="Retrieve all users attending event")
-    def get(self, request, event_user_id):
+    def get(self, request, event_id):
         
-        #get location by primary key, which is location_id
-        event_user = get_object_or_404(EventUser, pk=event_user_id)
+        event_users = EventUser.objects.all().filter(event=event_id)
 
-        serializer = self.serializer_class(instance=event_user)
+        serializer = self.serializer_class(instance=event_users)
 
         return Response(data=serializer.data, status=status.HTTP_200_OK)
+
+    @swagger_auto_schema(operation_summary="Update user attendance to event")
+    def attend(self, request, event_id):
+        event = get_object_or_404(EventUser, event=event_id)
+        data = request.data
+        if data.attendance == False:
+            data.attendance=True
+        else: 
+            data.attendance=False
+
+
+
+        serializer = self.serializer_class(data=data, instance=event)
+        if serializer.is_valid():
+            serializer.save()
