@@ -17,3 +17,5 @@ class Event(models.Model):
     date = models.DateTimeField(default=datetime.now())
     time = models.DateTimeField(default=datetime.now())
     running_duration = models.IntegerField(default=0)
+    description = models.TextField(max_length=255)
+    image = models.CharField(max_length=300)
