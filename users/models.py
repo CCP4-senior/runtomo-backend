@@ -8,6 +8,7 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     # runner_type = models.ForeignKey('RunnerType', on_delete=models.CASCADE)
     runner_type = ArrayField(models.CharField(max_length=200), blank=True)
+    age = models.IntegerField()
     # age, gender....
 
     def __str__(self):
