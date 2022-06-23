@@ -15,7 +15,7 @@ test_types = (
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     runner_type = ArrayField(models.CharField(max_length=200), blank=True)
-    age = models.IntegerField(min_value = 0)
+    age = models.IntegerField(default=1)
 
     def __str__(self):
         return f'{self.user.username} Profile'
