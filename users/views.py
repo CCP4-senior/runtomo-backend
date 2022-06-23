@@ -56,7 +56,7 @@ class ProfileCreateListView(generics.GenericAPIView):
         serializer = self.serializer_class(instance=profiles, many=True)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
-    @swagger_auto_schema(operation_summary="Create a new Profile (Not working at the moment)")
+    @swagger_auto_schema(operation_summary="Create a new Profile")
     def post(self, request):
         data = request.data
         serializer = self.serializer_class(data=data)
@@ -67,4 +67,18 @@ class ProfileCreateListView(generics.GenericAPIView):
 
         return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-      
+    @swagger_auto_schema(operation_summary="Update a Profile by user id ")
+    def put(self, request, user_id):
+        data = request.data
+
+        #get event by primary key, which is event_id
+        profile = get_object_or_404(Profile, pk=user_id)
+
+        serializer = self.serializer_class(data=data, instance=profile)
+
+        if serializer.is_valid():
+            serializer.save()
+
+            return Response(data=serializer.data, status=status.HTTP_200_OK)
+        
+        return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
