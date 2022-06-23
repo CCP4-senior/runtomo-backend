@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'locations',
     'location_types',
+    'event_users'
     'authentication.apps.AuthenticationConfig',
     'events.apps.EventsConfig',
     'users.apps.UsersConfig',
