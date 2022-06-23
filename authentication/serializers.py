@@ -21,7 +21,7 @@ class UserCreationSerializer(serializers.ModelSerializer):
         if username_exists:
             raise serializers.ValidationError(detail="Username already exists")
 
-        email_exists = User.objects.filter(username = attrs['email']).exists()
+        email_exists = User.objects.filter(email = attrs['email']).exists()
 
         if email_exists:
             raise serializers.ValidationError(detail="E-mail Address is already in use")
@@ -37,51 +37,5 @@ class UserCreationSerializer(serializers.ModelSerializer):
 
         user.set_password(validated_data['password'])
 
-        # create profile
-        # profile_data = validated_data.pop('profile')
-        # profile = Profile.objects.create(
-        #     user = user,
-        #     runner_type = profile_data['id'],
-        # )
-
-        # user.save()
+        user.save()
         return user
-
-# class UserUpdateSerializer(serializers.ModelSerializer):
-#     profile = ProfileSerializer(required=True)
-#     class Meta:
-#         model=User
-#         fields=['username', 'email', 'profile']
-#         extra_kwargs = {
-#             'username': {'required': True},
-#             'email': {'required': True},
-#         }
-
-#     def validate(self, attrs):
-#         username_exists = User.objects.filter(username = attrs['username']).exists()
-
-#         if username_exists:
-#             raise serializers.ValidationError(detail="Username already exists")
-
-#         email_exists = User.objects.filter(username = attrs['email']).exists()
-
-#         if email_exists:
-#             raise serializers.ValidationError(detail="E-mail Address is already in use")
-
-#         return super().validate(attrs)
-    
-    
-#     def update(self, instance, validated_data):
-#         # update user table
-#         instance.username = validated_data.get('username', instance.username)
-#         instance.email = validated_data.get('email', instance.email)
-
-#         # update profile table
-#         profile_data = validated_data.pop('profile')
-#         profile = Profile.objects.update(
-#             runner_type = profile_data['runner_type'],
-#         )
-
-#         instance.save()
-
-#         return instance

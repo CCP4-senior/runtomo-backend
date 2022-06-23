@@ -19,7 +19,9 @@ class ProfileSerializer(serializers.ModelSerializer):
     runner_type = serializers.ListField(child=serializers.CharField())
     class Meta:
         model = Profile
-        fields = ['runner_type']
+        fields = ['runner_type', 'age']
+
+
 
     # def create(self, validated_data):
     #     runner_type = validated_data.pop('runner_type')
