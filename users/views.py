@@ -49,6 +49,7 @@ class RunnerTypeListView(generics.GenericAPIView):
 class ProfileCreateListView(generics.GenericAPIView):
     serializer_class = serializers.ProfileSerializer
     queryset = Profile.objects.all()
+    
     @swagger_auto_schema(operation_summary="List all profiles")
     def get(self, request):
         profiles = Profile.objects.all()

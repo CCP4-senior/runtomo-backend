@@ -12,7 +12,6 @@ class RunnerTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = RunnerType
         fields = ['id', 'name']
-        read_only_fields = ['id']
         
 class ProfileSerializer(serializers.ModelSerializer):
     runner_type = RunnerTypeSerializer(many=True, required=False)
