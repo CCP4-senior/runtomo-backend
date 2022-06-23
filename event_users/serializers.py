@@ -6,4 +6,4 @@ class EventUserDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model=EventUser
-        fields = []
+        fields = ['event', 'user', 'attending']
