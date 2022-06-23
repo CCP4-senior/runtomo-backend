@@ -33,29 +33,30 @@ class UserDetailView(generics.GenericAPIView):
         serializer = self.serializer_class(instance=users)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
-class RunnerTypeListView(generics.GenericAPIView):
-    serializer_class = serializers.RunnerTypeSerializer
+# class RunnerTypeListView(generics.GenericAPIView):
+#     serializer_class = serializers.RunnerTypeSerializer
 
-    @swagger_auto_schema(operation_summary="List all Runner Types")
-    def get(self, request):
+#     @swagger_auto_schema(operation_summary="List all Runner Types")
+#     def get(self, request):
 
-        runner_types = RunnerType.objects.all()
+#         runner_types = RunnerType.objects.all()
 
-        serializer = self.serializer_class(instance=runner_types, many=True)
+#         serializer = self.serializer_class(instance=runner_types, many=True)
 
-        return Response(data=serializer.data, status=status.HTTP_200_OK)
+#         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 
 class ProfileCreateListView(generics.GenericAPIView):
     serializer_class = serializers.ProfileSerializer
     queryset = Profile.objects.all()
+    
     @swagger_auto_schema(operation_summary="List all profiles")
     def get(self, request):
         profiles = Profile.objects.all()
         serializer = self.serializer_class(instance=profiles, many=True)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
-    @swagger_auto_schema(operation_summary="Create a new Profile")
+    @swagger_auto_schema(operation_summary="Create a new Profile (Not working at the moment)")
     def post(self, request):
         data = request.data
         serializer = self.serializer_class(data=data)
