@@ -16,8 +16,6 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     runner_type = ArrayField(models.CharField(max_length=200), blank=True)
     age = models.IntegerField(default=0)
-    # gender = models.CharField(max_length=10, choices=gender)
-    # runner_type = models.ForeignKey('RunnerType', on_delete=models.CASCADE)
 
     def __str__(self):
         return f'{self.user.username} Profile'
