@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'authentication.apps.AuthenticationConfig',
     'events.apps.EventsConfig',
     'users.apps.UsersConfig',
+    'wards.apps.WardsConfig',
 
     #third_party_apps
     'rest_framework',
@@ -142,7 +143,7 @@ REST_FRAMEWORK={
 
 SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('Bearer',),
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=50),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
     'BLACKLIST_AFTER_ROTATION': False,
 }
