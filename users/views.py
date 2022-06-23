@@ -55,14 +55,13 @@ class ProfileCreateListView(generics.GenericAPIView):
         serializer = self.serializer_class(instance=profiles, many=True)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
-    @swagger_auto_schema(operation_summary="Create a new Profile+")
-    def post(self, request, id):
+    @swagger_auto_schema(operation_summary="Create a new Profile")
+    def post(self, request):
         data = request.data
-
         serializer = self.serializer_class(data=data)
-
+        user = request.user
         if serializer.is_valid():
-            serializer.save(user_id=id)
+            serializer.save(user=user)
             return Response(data=serializer.data, status=status.HTTP_201_CREATED)
 
         return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
