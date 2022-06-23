@@ -2,13 +2,14 @@ from django.forms import CharField
 from django.contrib.postgres.fields import ArrayField
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.forms import CharField
 
 User=get_user_model()
 
-gender = (
-    ('F', 'Female'),
-    ('M', 'Male'),
-    ('OTHER', 'Other'),
+test_types = (
+    ('AVID', 'Avid'),
+    ('COMPETITIVE', 'Competitive'),
+    ('FAST', 'Fast')
 )
 
 class Profile(models.Model):
