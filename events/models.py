@@ -14,6 +14,6 @@ class Event(models.Model):
     location = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add = True)
     ward = models.ForeignKey(Ward, on_delete=models.CASCADE, null=True)
-    date = models.DateField(default=datetime.now())
-    time = models.TimeField(default=datetime.now())
+    date = models.DateTimeField(default=datetime.now())
+    time = models.DateTimeField(default=datetime.now())
     running_duration = models.IntegerField(default=0)
