@@ -12,16 +12,17 @@ class RunnerTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = RunnerType
         fields = ['id', 'name']
+        read_only_fields = ['id']
         
 class ProfileSerializer(serializers.ModelSerializer):
-    runner_type = RunnerTypeSerializer(many=True, required=False)
+    runner_type = RunnerTypeSerializer(many=False, required=False)
     class Meta:
         model = Profile
-        fields = ['id','runner_type']
+        fields = ['id', 'runner_type']
         read_only_fields = ['id']
 
     def create(self, validated_data):
-        runner_type = validated_data.pop('runner_type',[])
+        runner_type = validated_data.pop('runner_type')
         profile = Profile.objects.create(**validated_data)
 
         auth_user = self.context['request'].user
