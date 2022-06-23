@@ -21,7 +21,7 @@ class UserCreationSerializer(serializers.ModelSerializer):
         if username_exists:
             raise serializers.ValidationError(detail="Username already exists")
 
-        email_exists = User.objects.filter(username = attrs['email']).exists()
+        email_exists = User.objects.filter(email = attrs['email']).exists()
 
         if email_exists:
             raise serializers.ValidationError(detail="E-mail Address is already in use")
