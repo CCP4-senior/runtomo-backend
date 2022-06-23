@@ -1,3 +1,4 @@
+from django.contrib.postgres.fields import ArrayField
 from django.db import models
 from django.contrib.auth import get_user_model
 
@@ -5,7 +6,9 @@ User=get_user_model()
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    runner_type = models.ForeignKey('RunnerType', on_delete=models.CASCADE)
+    # runner_type = models.ForeignKey('RunnerType', on_delete=models.CASCADE)
+    runner_type = ArrayField(models.CharField(max_length=200), blank=True)
+    # age, gender....
 
     def __str__(self):
         return f'{self.user.username} Profile'
