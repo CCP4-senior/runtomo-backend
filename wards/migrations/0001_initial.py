@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
             name='Wards',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('ward_name', models.CharField(choices=[('ADACHI-KU', 'Adachi-Ku'), ('ARAKAWA-KU', 'Arakawa-Ku'), ('BUNKYO-KU', 'Bunkyo-Ku'), ('CHIYODA-KU', 'Chiyoda-Ku'), ('CHUO-KU', 'Chuo-Ku'), ('EDOGAWA-KU', 'Edogawa-Ku'), ('ITABASHI-KU', 'Itabashi-Ku'), ('KATSUSHIKA-KU', 'Katsushika-Ku'), ('KITA-KU', 'Kita-Ku'), ('KOTO-KU', 'Koto-Ku'), ('MINATO-KU', 'Minato-Ku'), ('MEGURO-KU', 'Meguro-Ku'), ('NAKANO-KU', 'Nakano-Ku'), ('NERIMA-KU', 'Nerima-Ku'), ('OTA-KU', 'Ota-Ku'), ('SETAGAYA-KU', 'Setagaya-Ku'), ('SHIBUYA-KU', 'Shibuya-Ku'), ('SHINAGAWA-KU', 'Shinagawa-Ku'), ('SHINJUKU-KU', 'Shinjuku-Ku'), ('SUGINAMI-KU', 'Suginami-Ku'), ('SUMIDA-KU', 'Sumida-Ku'), ('TAITO-KU', 'Taito-Ku'), ('TOSHIMA-KU', 'Toshima-Ku')], default='ADACHI-KU', max_length=50)),
+                ('ward_name', models.CharField(choices=[('ADACHI', 'Adachi'), ('ARAKAWA', 'Arakawa'), ('BUNKYO', 'Bunkyo'), ('CHIYODA', 'Chiyoda'), ('CHUO', 'Chuo'), ('EDOGAWA', 'Edogawa'), ('ITABASHI', 'Itabashi'), ('KATSUSHIKA', 'Katsushika'), ('KITA', 'Kita'), ('KOTO', 'Koto'), ('MINATO', 'Minato'), ('MEGURO', 'Meguro'), ('NAKANO', 'Nakano'), ('NERIMA', 'Nerima'), ('OTA', 'Ota'), ('SETAGAYA', 'Setagaya'), ('SHIBUYA', 'Shibuya'), ('SHINAGAWA', 'Shinagawa'), ('SHINJUKU', 'Shinjuku'), ('SUGINAMI', 'Suginami'), ('SUMIDA', 'Sumida'), ('TAITO', 'Taito'), ('TOSHIMA', 'Toshima')], default='ADACHI', max_length=50)),
             ],
         ),
     ]
