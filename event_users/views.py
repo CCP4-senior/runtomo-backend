@@ -20,7 +20,7 @@ class EventUserDetailView(generics.GenericAPIView):
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
     @swagger_auto_schema(operation_summary="Update user attendance to event")
-    def attend(self, request, event_id):
+    def post(self, request, event_id):
         event = get_object_or_404(EventUser, event=event_id)
         data = request.data
         if data.attendance == False:
