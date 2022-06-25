@@ -15,6 +15,6 @@ class LocationDetailSerializer(serializers.ModelSerializer):
     long = serializers.FloatField(read_only=True)
     lat = serializers.FloatField(read_only=True)
 
-class Meta:
-    model=Location
-    fields = ['id', 'type', 'long', 'lat']
+    class Meta:
+        model=Location
+        fields = ['id', 'type', 'long', 'lat']
