@@ -2,7 +2,7 @@ from dataclasses import field
 from unittest import runner
 
 from pkg_resources import require
-from .models import Profile, RunnerType
+from .models import Profile
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
