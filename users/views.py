@@ -26,25 +26,12 @@ class UserDetailView(generics.GenericAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = serializers.UserDetailSerializer
 
-    @swagger_auto_schema(operation_summary="Retrieve a user by username")
-    def get(self, request, id):
+    @swagger_auto_schema(operation_summary="Retrieve a user by id")
+    def get(self, request, user_id):
 
-        users = get_object_or_404(User, pk=id)
+        users = get_object_or_404(User, pk=user_id)
         serializer = self.serializer_class(instance=users)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
-
-# class RunnerTypeListView(generics.GenericAPIView):
-#     serializer_class = serializers.RunnerTypeSerializer
-
-#     @swagger_auto_schema(operation_summary="List all Runner Types")
-#     def get(self, request):
-
-#         runner_types = RunnerType.objects.all()
-
-#         serializer = self.serializer_class(instance=runner_types, many=True)
-
-#         return Response(data=serializer.data, status=status.HTTP_200_OK)
-
 
 class ProfileCreateListView(generics.GenericAPIView):
     serializer_class = serializers.ProfileSerializer
@@ -71,7 +58,7 @@ class ProfileCreateListView(generics.GenericAPIView):
     def put(self, request, user_id):
         data = request.data
 
-        #get event by primary key, which is event_id
+        #get profile by primary key, which is profile
         profile = get_object_or_404(Profile, pk=user_id)
 
         serializer = self.serializer_class(data=data, instance=profile)
