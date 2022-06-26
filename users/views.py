@@ -3,7 +3,7 @@ from rest_framework import generics, status, viewsets, mixins
 from rest_framework.response import Response
 from . import serializers
 from drf_yasg.utils import swagger_auto_schema
-from .models import Profile, RunnerLevel
+from .models import Profile, RunnerLevel, RunnerTag
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, IsAdminUser
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication
 from django.contrib.auth import get_user_model
@@ -34,43 +34,7 @@ class UserDetailView(generics.GenericAPIView):
         users = get_object_or_404(User, pk=user_id)
         serializer = self.serializer_class(instance=users)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
-
-class ProfileCreateListView(generics.GenericAPIView):
-    serializer_class = serializers.ProfileSerializer
-    queryset = Profile.objects.all()
-    
-    @swagger_auto_schema(operation_summary="List all profiles")
-    def get(self, request):
-        profiles = Profile.objects.all()
-        serializer = self.serializer_class(instance=profiles, many=True)
-        return Response(data=serializer.data, status=status.HTTP_200_OK)
-
-    @swagger_auto_schema(operation_summary="Create a new Profile")
-    def post(self, request):
-        data = request.data
-        serializer = self.serializer_class(data=data)
-        user = request.user
-        if serializer.is_valid():
-            serializer.save(user=user)
-            return Response(data=serializer.data, status=status.HTTP_201_CREATED)
-
-        return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    @swagger_auto_schema(operation_summary="Update a Profile by user id ")
-    def put(self, request, user_id):
-        data = request.data
-
-        #get profile by primary key, which is profile
-        profile = get_object_or_404(Profile, pk=user_id)
-
-        serializer = self.serializer_class(data=data, instance=profile)
-
-        if serializer.is_valid():
-            serializer.save()
-
-            return Response(data=serializer.data, status=status.HTTP_200_OK)
         
-        return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @method_decorator(name='create', decorator=swagger_auto_schema(
     operation_summary="Create a Profile (For a logged in User)"
@@ -126,3 +90,28 @@ class RunnerLevelViewSet(mixins.DestroyModelMixin,
 
     def get_queryset(self):
         return self.queryset.filter(user=self.request.user).order_by('-name')
+
+
+@method_decorator(name='list', decorator=swagger_auto_schema(
+    operation_summary="List all Runner Tags"
+))
+@method_decorator(name='update', decorator=swagger_auto_schema(
+    operation_summary="Update a Runner Tag (Whole Object)"
+))
+@method_decorator(name='partial_update', decorator=swagger_auto_schema(
+    operation_summary="Partial Update a Runner Tag"
+))
+@method_decorator(name='destroy', decorator=swagger_auto_schema(
+    operation_summary="Remove a Runner Tag"
+))
+class RunnerTagViewSet(mixins.DestroyModelMixin,
+                         mixins.UpdateModelMixin,
+                         mixins.ListModelMixin,
+                         viewsets.GenericViewSet):
+    serializer_class = serializers.RunnerTagSerializer
+    queryset = RunnerTag.objects.all()
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return self.queryset.filter(user=self.request.user).order_by('-name')
+
