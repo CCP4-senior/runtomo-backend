@@ -19,7 +19,7 @@ class Profile(models.Model):
     runner_level = models.ManyToManyField('RunnerLevel')
 
     def __str__(self):
-        return f'{self.user.username} Profile'
+        return f'{self.user} Profile'
 
 class RunnerType(models.Model):
     name = models.CharField(max_length=100)

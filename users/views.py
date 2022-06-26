@@ -81,6 +81,7 @@ class ProfileCreateListView(generics.GenericAPIView):
 @method_decorator(name='partial_update', decorator=swagger_auto_schema(
     operation_summary="Partial Update a Profile by Profile ID"
 ))
+
 class ProfileViewSet(mixins.UpdateModelMixin,
                     mixins.CreateModelMixin,
                     viewsets.GenericViewSet):
@@ -91,7 +92,7 @@ class ProfileViewSet(mixins.UpdateModelMixin,
     def get_queryset(self):
         return self.queryset.filter(user=self.request.user).order_by('-id')
 
-    def create(self, serializer):
+    def perform_create(self, serializer):
         data = self.request.data
         serializer = self.serializer_class(data=data)
 

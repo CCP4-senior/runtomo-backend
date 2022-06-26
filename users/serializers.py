@@ -5,6 +5,7 @@ from pkg_resources import require
 from .models import Profile, RunnerLevel
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
+from rest_framework.fields import CurrentUserDefault
 
 User=get_user_model()
 
@@ -20,14 +21,14 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Profile
-        fields = ['id', 'age', 'runner_type', 'runner_level'] 
+        fields = ['id', 'age', 'runner_type','runner_level'] 
         read_only_fields = ['id']
 
     def create(self, validated_data):
         runner_level = validated_data.pop('runner_level', [])
         profile = Profile.objects.create(**validated_data)
-        auth_user = self.context['request'].user
-
+        # auth_user = User.objects.get(id)
+        auth_user = self.context['request']
         for item in runner_level:
             item_obj, created = RunnerLevel.objects.get_or_create(
                 user=auth_user,
