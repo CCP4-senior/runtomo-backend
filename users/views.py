@@ -1,9 +1,9 @@
 from django.shortcuts import render, get_object_or_404
-from rest_framework import generics, status
+from rest_framework import generics, status, viewsets, mixins
 from rest_framework.response import Response
 from . import serializers
 from drf_yasg.utils import swagger_auto_schema
-from .models import Profile, RunnerType
+from .models import Profile, RunnerLevel
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, IsAdminUser
 from django.contrib.auth import get_user_model
 
@@ -69,3 +69,11 @@ class ProfileCreateListView(generics.GenericAPIView):
             return Response(data=serializer.data, status=status.HTTP_200_OK)
         
         return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class RunnerLevelViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
+    serializer_class = serializers.RunnerLevelSerializer
+    queryset = RunnerLevel.objects.all()
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return self.queryset.filter(user=self.request.user).order_by('-name')

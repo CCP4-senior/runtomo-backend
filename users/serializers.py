@@ -2,7 +2,7 @@ from dataclasses import field
 from unittest import runner
 
 from pkg_resources import require
-from .models import Profile
+from .models import Profile, RunnerLevel
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
@@ -25,3 +25,10 @@ class UserDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'username', 'email', 'profile']
+
+class RunnerLevelSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = RunnerLevel
+        fields = ['id', 'name']
+        read_only_fields = ['id']
