@@ -5,7 +5,9 @@ from . import serializers
 from drf_yasg.utils import swagger_auto_schema
 from .models import Profile, RunnerLevel
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, IsAdminUser
+from rest_framework.authentication import TokenAuthentication, SessionAuthentication
 from django.contrib.auth import get_user_model
+from django.utils.decorators import method_decorator
 
 User = get_user_model()
 
@@ -70,7 +72,51 @@ class ProfileCreateListView(generics.GenericAPIView):
         
         return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class RunnerLevelViewSet(mixins.UpdateModelMixin,
+@method_decorator(name='create', decorator=swagger_auto_schema(
+    operation_summary="Create a Profile (For a logged in User)"
+))
+@method_decorator(name='update', decorator=swagger_auto_schema(
+    operation_summary="Update a Profile by Profile ID"
+))
+@method_decorator(name='partial_update', decorator=swagger_auto_schema(
+    operation_summary="Partial Update a Profile by Profile ID"
+))
+class ProfileViewSet(mixins.UpdateModelMixin,
+                    mixins.CreateModelMixin,
+                    viewsets.GenericViewSet):
+    serializer_class = serializers.ProfileSerializer
+    queryset = Profile.objects.all()
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return self.queryset.filter(user=self.request.user).order_by('-id')
+
+    def create(self, serializer):
+        data = self.request.data
+        serializer = self.serializer_class(data=data)
+
+        user = self.request.user
+        if serializer.is_valid():
+            serializer.save(user=user)
+            return Response(data=serializer.data, status=status.HTTP_201_CREATED)
+
+        return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@method_decorator(name='list', decorator=swagger_auto_schema(
+    operation_summary="List all Runner Level"
+))
+@method_decorator(name='update', decorator=swagger_auto_schema(
+    operation_summary="Update a Runner Level (Whole Object)"
+))
+@method_decorator(name='partial_update', decorator=swagger_auto_schema(
+    operation_summary="Partial Update a Runner Level"
+))
+@method_decorator(name='destroy', decorator=swagger_auto_schema(
+    operation_summary="Remove a Runner Level"
+))
+class RunnerLevelViewSet(mixins.DestroyModelMixin,
+                         mixins.UpdateModelMixin,
                          mixins.ListModelMixin,
                          viewsets.GenericViewSet):
     serializer_class = serializers.RunnerLevelSerializer
