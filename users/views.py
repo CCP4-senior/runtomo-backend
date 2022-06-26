@@ -70,7 +70,9 @@ class ProfileCreateListView(generics.GenericAPIView):
         
         return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class RunnerLevelViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
+class RunnerLevelViewSet(mixins.UpdateModelMixin,
+                         mixins.ListModelMixin,
+                         viewsets.GenericViewSet):
     serializer_class = serializers.RunnerLevelSerializer
     queryset = RunnerLevel.objects.all()
     permission_classes = [IsAuthenticated]
