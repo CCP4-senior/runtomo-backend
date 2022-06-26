@@ -11,7 +11,6 @@ class LocationTypeCreationSerializer(serializers.ModelSerializer):
 class LocationTypeDetailSerializer(serializers.ModelSerializer):
     name = serializers.CharField(max_length=200)
 
-
-class Meta:
-    model=LocationType
-    fields = ['id', 'name']
+    class Meta:
+        model=LocationType
+        fields = ['id', 'name']
