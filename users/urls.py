@@ -2,7 +2,7 @@ from rest_framework.routers import DefaultRouter
 from django.urls import path, include
 from . import views
 
-router = DefaultRouter()
+router = DefaultRouter(trailing_slash=False)
 router.register('profile', views.ProfileViewSet)
 router.register('runner-level', views.RunnerLevelViewSet)
 
