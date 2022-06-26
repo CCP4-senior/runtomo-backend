@@ -3,7 +3,7 @@ from rest_framework import generics, status, viewsets, mixins
 from rest_framework.response import Response
 from . import serializers
 from drf_yasg.utils import swagger_auto_schema
-from .models import Profile, RunnerLevel
+from .models import Profile, RunnerLevel, RunnerTag
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, IsAdminUser
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication
 from django.contrib.auth import get_user_model
@@ -90,3 +90,28 @@ class RunnerLevelViewSet(mixins.DestroyModelMixin,
 
     def get_queryset(self):
         return self.queryset.filter(user=self.request.user).order_by('-name')
+
+
+@method_decorator(name='list', decorator=swagger_auto_schema(
+    operation_summary="List all Runner Tags"
+))
+@method_decorator(name='update', decorator=swagger_auto_schema(
+    operation_summary="Update a Runner Tag (Whole Object)"
+))
+@method_decorator(name='partial_update', decorator=swagger_auto_schema(
+    operation_summary="Partial Update a Runner Tag"
+))
+@method_decorator(name='destroy', decorator=swagger_auto_schema(
+    operation_summary="Remove a Runner Tag"
+))
+class RunnerTagViewSet(mixins.DestroyModelMixin,
+                         mixins.UpdateModelMixin,
+                         mixins.ListModelMixin,
+                         viewsets.GenericViewSet):
+    serializer_class = serializers.RunnerTagSerializer
+    queryset = RunnerTag.objects.all()
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return self.queryset.filter(user=self.request.user).order_by('-name')
+

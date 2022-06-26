@@ -10,7 +10,7 @@ class OptionalSlashRouter(DefaultRouter):
 router = OptionalSlashRouter()
 router.register('profile', views.ProfileViewSet)
 router.register('runner-level', views.RunnerLevelViewSet)
-# router.register('runner-tag', views.RunnerTagViewSet)
+router.register('runner-tag', views.RunnerTagViewSet)
 
 urlpatterns = [
     path('', views.UserListView.as_view(), name='users'),
