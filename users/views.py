@@ -94,7 +94,7 @@ class ProfileViewSet(mixins.UpdateModelMixin,
 
     def perform_create(self, serializer):
         data = self.request.data
-        serializer = self.serializer_class(data=data)
+        serializer = self.serializer_class(data=data, context={"request":self.request})
 
         user = self.request.user
         if serializer.is_valid():

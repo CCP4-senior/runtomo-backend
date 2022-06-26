@@ -26,12 +26,14 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         runner_level = validated_data.pop('runner_level', [])
-        profile = Profile.objects.create(**validated_data)
-        # auth_user = User.objects.get(id)
-        auth_user = self.context['request']
+        profile = Profile(**validated_data)
+
+        profile.save()
+
+        request = self.context.get('request', None)
         for item in runner_level:
             item_obj, created = RunnerLevel.objects.get_or_create(
-                user=auth_user,
+                user=request.user,
                 **item
             )
             profile.runner_level.add(item_obj)
