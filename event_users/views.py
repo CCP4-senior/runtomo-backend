@@ -4,7 +4,8 @@ from rest_framework.response import Response
 from . import serializers
 from drf_yasg.utils import swagger_auto_schema
 from .models import EventUser
-from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, IsAdminUser
+from rest_framework.permissions import IsAuthenticated
+from events.models import Event
 
 class EventUserDetailView(generics.GenericAPIView):
     serializer_class = serializers.EventUserDetailSerializer
@@ -19,18 +20,26 @@ class EventUserDetailView(generics.GenericAPIView):
 
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
-    @swagger_auto_schema(operation_summary="Update user attendance to event")
-    def post(self, request, event_id):
-        event = get_object_or_404(EventUser, event=event_id)
-        data = request.data
-        if data.attendance == False:
-            data.attendance=True
-        else: 
-            data.attendance=False
+    @swagger_auto_schema(operation_summary="Add user attendance")
+    def event_add_user(self, request, pk):
 
-        serializer = self.serializer_class(data=data, instance=event)
-        if serializer.is_valid():
-            serializer.save()
+        chosen_event = Event.objects.get(pk=pk)
 
-            return Response(data=serializer.data, status=status.HTTP_200_OK)
-        return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        chosen_event.add_user_attendance(user=request.user)
+
+        serializer = self.serializer_class(instance=chosen_event)
+
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+
+    @swagger_auto_schema(operation_summary="Remove user attendance")
+    def event_remove_user(self, request, pk):
+
+        chosen_event = Event.objects.get(pk=pk)
+
+        chosen_event.remove_user_attendance(request.user)
+
+        serializer = self.serializer_class(instance=chosen_event)
+
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+
+    
