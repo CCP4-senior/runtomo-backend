@@ -9,8 +9,6 @@ class UserCreationSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(max_length=100, allow_null=False, allow_blank=False)
     password = serializers.CharField(min_length=8, write_only=True)
 
-    # # When Creating Users, Profile should also be created
-    # profile = ProfileSerializer(required=True)
     class Meta:
         model=User
         fields=['username', 'email', 'password']
@@ -21,7 +19,7 @@ class UserCreationSerializer(serializers.ModelSerializer):
         if username_exists:
             raise serializers.ValidationError(detail="Username already exists")
 
-        email_exists = User.objects.filter(username = attrs['email']).exists()
+        email_exists = User.objects.filter(email = attrs['email']).exists()
 
         if email_exists:
             raise serializers.ValidationError(detail="E-mail Address is already in use")
@@ -37,51 +35,34 @@ class UserCreationSerializer(serializers.ModelSerializer):
 
         user.set_password(validated_data['password'])
 
-        # create profile
-        # profile_data = validated_data.pop('profile')
-        # profile = Profile.objects.create(
-        #     user = user,
-        #     runner_type = profile_data['id'],
-        # )
-
-        # user.save()
+        user.save()
         return user
 
-# class UserUpdateSerializer(serializers.ModelSerializer):
-#     profile = ProfileSerializer(required=True)
-#     class Meta:
-#         model=User
-#         fields=['username', 'email', 'profile']
-#         extra_kwargs = {
-#             'username': {'required': True},
-#             'email': {'required': True},
-#         }
+class UserUpdateSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(max_length=25, allow_null=True, allow_blank=True)
+    email = serializers.EmailField(max_length=100, allow_null=False, allow_blank=False)
 
-#     def validate(self, attrs):
-#         username_exists = User.objects.filter(username = attrs['username']).exists()
+    class Meta:
+        model=User
+        fields=['username', 'email']
 
-#         if username_exists:
-#             raise serializers.ValidationError(detail="Username already exists")
+    def validate(self, attrs):
+        username_exists = User.objects.filter(username = attrs['username']).exists()
 
-#         email_exists = User.objects.filter(username = attrs['email']).exists()
+        if username_exists:
+            raise serializers.ValidationError(detail="Username already exists")
 
-#         if email_exists:
-#             raise serializers.ValidationError(detail="E-mail Address is already in use")
+        email_exists = User.objects.filter(email = attrs['email']).exists()
 
-#         return super().validate(attrs)
+        if email_exists:
+            raise serializers.ValidationError(detail="E-mail Address is already in use")
+
+        return super().validate(attrs)
     
-    
-#     def update(self, instance, validated_data):
-#         # update user table
-#         instance.username = validated_data.get('username', instance.username)
-#         instance.email = validated_data.get('email', instance.email)
+    def update(self, instance, validated_data):
+        instance.email = validated_data['email']
+        instance.username = validated_data['username']
 
-#         # update profile table
-#         profile_data = validated_data.pop('profile')
-#         profile = Profile.objects.update(
-#             runner_type = profile_data['runner_type'],
-#         )
+        instance.save()
 
-#         instance.save()
-
-#         return instance
+        return instance

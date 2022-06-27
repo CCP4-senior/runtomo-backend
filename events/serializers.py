@@ -8,7 +8,7 @@ class EventCreationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model=Event
-        fields = ['id', 'title', 'location', 'ward']
+        fields = ['id', 'title', 'location', 'created_at', 'ward', 'date', 'time', 'running_duration', 'description', 'image']
 
 class EventDetailSerializer(serializers.ModelSerializer):
 
@@ -18,5 +18,5 @@ class EventDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model=Event
-        fields = ['id', 'title', 'location', 'ward', 'created_at']
+        fields = ['id', 'title', 'location', 'ward', 'created_at', 'date', 'time', 'running_duration', 'description', 'image'] #will this work?
 

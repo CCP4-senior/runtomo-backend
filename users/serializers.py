@@ -2,37 +2,91 @@ from dataclasses import field
 from unittest import runner
 
 from pkg_resources import require
-from .models import Profile, RunnerType
+from .models import Profile, RunnerLevel, RunnerTag
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
 User=get_user_model()
 
-class RunnerTypeSerializer(serializers.ModelSerializer):
+class RunnerLevelSerializer(serializers.ModelSerializer):
     class Meta:
-        model = RunnerType
+        model = RunnerLevel
         fields = ['id', 'name']
         read_only_fields = ['id']
-        
-class ProfileSerializer(serializers.ModelSerializer):
-    runner_type = RunnerTypeSerializer(many=True, required=False)
+
+class RunnerTagSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Profile
-        fields = ['id','runner_type']
+        model = RunnerTag
+        fields = ['id', 'name']
         read_only_fields = ['id']
 
-    def create(self, validated_data):
-        runner_type = validated_data.pop('runner_type',[])
-        profile = Profile.objects.create(**validated_data)
+class ProfileSerializer(serializers.ModelSerializer):
+    runner_tag = RunnerTagSerializer(many=True, required=False)
+    runner_level = RunnerLevelSerializer(many=True, required=False)
 
-        auth_user = self.context['request'].user
-        runner_obj = RunnerType.objects.get_or_create(
-            user = auth_user,
-            **runner_type,
+    class Meta:
+        model = Profile
+        fields = ['id', 'age', 'image', 'runner_tag','runner_level'] 
+        read_only_fields = ['id']
+
+    def _get_or_create_runner_level(self, runner_level, profile):
+        request = self.context.get('request', None)
+        # loop runner_level
+        for item in runner_level:
+            item_obj, created = RunnerLevel.objects.get_or_create(
+                user=request.user,
+                **item
             )
-        profile.runner_type.add(runner_obj)
-            
+            profile.runner_level.add(item_obj)
+
+    def _get_or_create_runner_tag(self, runner_tag, profile):
+        request = self.context.get('request', None)
+
+        # loop runner_tag
+        for item in runner_tag:
+            item_obj, created = RunnerTag.objects.get_or_create(
+                user=request.user,
+                **item
+            )
+            profile.runner_tag.add(item_obj)
+
+    def create(self, validated_data):
+        runner_level = validated_data.pop('runner_level', [])
+        runner_tag = validated_data.pop('runner_tag', [])
+        profile = Profile(**validated_data)
+
+            # def validate(self, attrs):
+            #     profile_exists = Profile.objects.filter(runner_tag = attrs['runner_tag']).exists()
+
+            #     if profile_exists:
+            #         raise serializers.ValidationError(detail="Username already exists")
+
+            #     return super().validate(attrs)
+
+        profile.save()
+        self._get_or_create_runner_level(runner_level, profile)
+        self._get_or_create_runner_tag(runner_tag, profile)
+        
+        
         return profile
+    
+    def update(self, instance, validated_data):
+        runner_level = validated_data.pop('runner_level', None)
+        runner_tag = validated_data.pop('runner_tag', None)
+
+        if runner_level is not None:
+            instance.runner_level.clear()
+            self._get_or_create_runner_level(runner_level, instance)
+        
+        if runner_tag is not None:
+            instance.runner_tag.clear()
+            self._get_or_create_runner_tag(runner_tag, instance)
+
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        
+        instance.save()
+        return instance
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
