@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import get_object_or_404
 from rest_framework import generics, status
 from rest_framework.response import Response
 from . import serializers
@@ -21,25 +21,19 @@ class EventUserDetailView(generics.GenericAPIView):
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
     @swagger_auto_schema(operation_summary="Add user attendance")
-    def event_add_user(self, request, pk):
+    def post(self, request, event_id):
 
-        chosen_event = Event.objects.get(pk=pk)
+        event = get_object_or_404(Event, pk=event_id)
+        newAttendee = EventUser.objects.create(user=self, event=event)
 
-        chosen_event.add_user_attendance(user=request.user)
-
-        serializer = self.serializer_class(instance=chosen_event)
-
+        serializer = self.serializer_class(instance=newAttendee)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
     @swagger_auto_schema(operation_summary="Remove user attendance")
-    def event_remove_user(self, request, pk):
+    def delete(self, request, event_id):
 
-        chosen_event = Event.objects.get(pk=pk)
+        userAttendance = EventUser.objects.get(user=self, event=event_id)
 
-        chosen_event.remove_user_attendance(request.user)
+        userAttendance.delete()
 
-        serializer = self.serializer_class(instance=chosen_event)
-
-        return Response(data=serializer.data, status=status.HTTP_200_OK)
-
-    
+        return Response(status=status.HTTP_200_OK)
