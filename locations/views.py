@@ -11,7 +11,7 @@ class LocationDetailView(generics.GenericAPIView):
     serializer_class = serializers.LocationDetailSerializer
     permission_classes = [IsAuthenticated]
 
-    @swagger_auto_schema(operation_summary="Retrieve an location")
+    @swagger_auto_schema(operation_summary="Retrieve a location")
     def get(self, request, location_id):
         
         #get location by primary key, which is location_id
