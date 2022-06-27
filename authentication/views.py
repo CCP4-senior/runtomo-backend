@@ -33,6 +33,25 @@ class UserUpdateView(generics.UpdateAPIView):
     serializer_class = serializers.UserUpdateSerializer
     permission_classes = [IsAuthenticated]
 
-    @swagger_auto_schema(operation_summary="Update a user account")
     def get_object(self):
         return self.request.user
+
+class ChangePasswordView(generics.UpdateAPIView):
+    queryset = User.objects.all()
+    permission_classes = (IsAuthenticated,)
+    serializer_class = serializers.ChangePasswordSerializer
+
+    def get_queryset(self):
+       data = User.objects.all()
+       return data
+
+    def update(self, request, *args, **kwargs):
+        data = self.request.data
+        serializer = self.serializer_class(data=data, context={"request":self.request})
+
+        if serializer.is_valid():
+            return Response(data={"message":"Password has been changed successfully."}, status=status.HTTP_201_CREATED)
+
+        return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        
