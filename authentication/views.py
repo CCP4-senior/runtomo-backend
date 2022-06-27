@@ -1,10 +1,11 @@
 from django.shortcuts import render
-from rest_framework import generics, status
+from rest_framework import generics, status, viewsets, mixins
 from rest_framework.response import Response
 from drf_yasg.utils import swagger_auto_schema
 from .models import User
 from . import serializers
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, IsAdminUser
+from django.utils.decorators import method_decorator
 
 # Create your views here.
 class HelloAuthView(generics.GenericAPIView):
@@ -26,10 +27,31 @@ class UserCreateView(generics.GenericAPIView):
 
         return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class UserUpdateView(generics.RetrieveUpdateAPIView):
+
+class UserUpdateView(generics.UpdateAPIView):
+    queryset = User.objects.all()
     serializer_class = serializers.UserUpdateSerializer
     permission_classes = [IsAuthenticated]
 
-    @swagger_auto_schema(operation_summary="Update a user account")
     def get_object(self):
         return self.request.user
+
+class ChangePasswordView(generics.UpdateAPIView):
+    queryset = User.objects.all()
+    permission_classes = (IsAuthenticated,)
+    serializer_class = serializers.ChangePasswordSerializer
+
+    def get_queryset(self):
+       data = User.objects.all()
+       return data
+
+    def update(self, request, *args, **kwargs):
+        data = self.request.data
+        serializer = self.serializer_class(data=data, context={"request":self.request})
+
+        if serializer.is_valid():
+            return Response(data={"message":"Password has been changed successfully."}, status=status.HTTP_201_CREATED)
+
+        return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        
