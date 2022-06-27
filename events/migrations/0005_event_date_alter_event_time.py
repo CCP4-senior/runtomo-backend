@@ -14,11 +14,11 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='event',
             name='date',
-            field=models.DateField(default=datetime.datetime(2022, 6, 23, 17, 38, 5, 649566)),
+            field=models.DateTimeField(default=datetime.datetime(2022, 6, 23, 17, 38, 5, 649566)),
         ),
         migrations.AlterField(
             model_name='event',
             name='time',
-            field=models.TimeField(default=datetime.datetime(2022, 6, 23, 17, 38, 5, 649566)),
+            field=models.DateTimeField(default=datetime.datetime(2022, 6, 23, 17, 38, 5, 649566)),
         ),
     ]
