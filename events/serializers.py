@@ -17,6 +17,7 @@ class EventDetailSerializer(serializers.ModelSerializer):
     title = serializers.CharField(max_length=255)
     location = serializers.CharField(max_length=255)
     created_at = serializers.DateTimeField('date created')
+    ward = serializers.StringRelatedField()
 
     class Meta:
         model=Event
