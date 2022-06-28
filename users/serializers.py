@@ -26,7 +26,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Profile
-        fields = ['id', 'age', 'image', 'runner_tag','runner_level'] 
+        fields = ['id', 'age', 'image', 'runner_tag','runner_level', 'date_of_birth', 'run_frequency', 'estimated10k', 'estimated5k'] 
         read_only_fields = ['id']
 
     def _get_or_create_runner_level(self, runner_level, profile):
