@@ -28,6 +28,7 @@ urlpatterns = [
    path('docs/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'), 
    path('locations/', include('locations.urls')),
-   path('location_types/', include('location_types.urls'))
+   path('location_types/', include('location_types.urls')),
+   path('event_users/', include('event_users.urls')),
 ]
 
