@@ -12,7 +12,7 @@ class WardListView(serializers.ModelSerializer):
 class WardDetailView(serializers.ModelSerializer):
 
     ward_name = serializers.CharField(max_length=50)
-
+    
     class Meta:
         model = Ward
         fields = ['id', 'ward_name']
