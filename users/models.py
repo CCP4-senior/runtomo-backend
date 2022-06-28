@@ -10,7 +10,7 @@ class Profile(models.Model):
     runner_level = models.ManyToManyField('RunnerLevel')
     runner_tag = models.ManyToManyField('RunnerTag')
     image = models.CharField(max_length=300, null=True, blank=True)
-    date_of_birth = models.DateField(auto_now=True)
+    date_of_birth = models.DateField(max_length=8)
     run_frequency = models.CharField(max_length=255, null=True)
     estimated10k = models.CharField(max_length=255, null=True)
     estimated5k = models.CharField(max_length=255, null=True)
