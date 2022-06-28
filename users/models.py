@@ -7,7 +7,6 @@ User=get_user_model()
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    # runner_type = ArrayField(models.CharField(max_length=200), blank=True)
     age = models.IntegerField(default=1)
     runner_level = models.ManyToManyField('RunnerLevel')
     runner_tag = models.ManyToManyField('RunnerTag')
