@@ -54,4 +54,15 @@ class ChangePasswordView(generics.UpdateAPIView):
 
         return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+class UserDeleteView(generics.GenericAPIView):
+    serializer_class = serializers.UserCreationSerializer    
+    permission_classes = [IsAuthenticated]
+
+    @swagger_auto_schema(operation_summary="Delete a user account + Profile")
+    def delete(self, request):
+        user=self.request.user
+        user.delete()
+
+        return Response({"message": "User is deleted!"})
         
