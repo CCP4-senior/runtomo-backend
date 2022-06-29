@@ -55,13 +55,11 @@ class ProfileSerializer(serializers.ModelSerializer):
         runner_tag = validated_data.pop('runner_tag', [])
         profile = Profile(**validated_data)
 
-            # def validate(self, attrs):
-            #     profile_exists = Profile.objects.filter(runner_tag = attrs['runner_tag']).exists()
+        user_id = self.context['request'].user.id
 
-            #     if profile_exists:
-            #         raise serializers.ValidationError(detail="Username already exists")
-
-            #     return super().validate(attrs)
+        # Validation: Send Error message when profile is exist
+        if Profile.objects.filter(user_id=user_id).exists():
+            raise serializers.ValidationError({"message": "Profile is already exist"})
 
         profile.save()
         self._get_or_create_runner_level(runner_level, profile)
