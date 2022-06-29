@@ -13,10 +13,10 @@ class EventUserDetailView(generics.GenericAPIView):
 
     @swagger_auto_schema(operation_summary="Retrieve all users attending event")
     def get(self, request, event_id):
-        
+
         event_users = EventUser.objects.all().filter(event=event_id)
 
-        serializer = self.serializer_class(instance=event_users)
+        serializer = self.serializer_class(instance=event_users, many=True)
 
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
