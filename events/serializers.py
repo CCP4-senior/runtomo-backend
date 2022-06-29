@@ -7,7 +7,7 @@ class EventCreationSerializer(serializers.ModelSerializer):
     title = serializers.CharField(max_length=255)
     creator = serializers.StringRelatedField()
     location = serializers.CharField(max_length=255)
-    ward = serializers.CharField(source='ward.ward_name', read_only=True)
+    ward = serializers.SlugRelatedField(queryset = Ward.objects.all(),slug_field = 'ward_name')
 
     class Meta:
         model=Event
