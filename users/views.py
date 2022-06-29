@@ -28,7 +28,7 @@ class UserDetailView(generics.GenericAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = serializers.UserDetailSerializer
 
-    @swagger_auto_schema(operation_summary="Retrieve a user by id")
+    @swagger_auto_schema(operation_summary="Retrieve a User & Profile by user_id")
     def get(self, request, user_id):
 
         users = get_object_or_404(User, pk=user_id)
