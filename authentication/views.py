@@ -59,7 +59,7 @@ class UserDeleteView(generics.GenericAPIView):
     serializer_class = serializers.UserCreationSerializer    
     permission_classes = [IsAuthenticated]
 
-    @swagger_auto_schema(operation_summary="Delete a user account + Profile")
+    @swagger_auto_schema(operation_summary="Delete a user account")
     def delete(self, request):
         user=self.request.user
         user.delete()
