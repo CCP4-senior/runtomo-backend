@@ -1,11 +1,14 @@
 from wards.models import Ward
 from .models import Event
 from rest_framework import serializers
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 class EventCreationSerializer(serializers.ModelSerializer):
 
     title = serializers.CharField(max_length=255)
-    creator = serializers.StringRelatedField()
+    creator = serializers.SlugRelatedField(queryset=User.objects.all(), slug_field='email')
     location = serializers.CharField(max_length=255)
     ward = serializers.SlugRelatedField(queryset = Ward.objects.all(),slug_field = 'ward_name')
 
@@ -16,7 +19,7 @@ class EventCreationSerializer(serializers.ModelSerializer):
 class EventDetailSerializer(serializers.ModelSerializer):
 
     title = serializers.CharField(max_length=255)
-    creator = serializers.StringRelatedField()
+    creator = serializers.SlugRelatedField(queryset=User.objects.all(), slug_field='email')
     location = serializers.CharField(max_length=255)
     created_at = serializers.DateTimeField('date created')
     ward = serializers.CharField(source='ward.ward_name', default=None)
