@@ -22,6 +22,15 @@ class EventCreateListView(generics.GenericAPIView):
     queryset = Event.objects.all()
     permission_classes = [IsAuthenticated]
 
+    @swagger_auto_schema(operation_summary="List all events created by users")
+    def get(self, request):
+
+        events = Event.objects.all().order_by('-created_at')
+
+        serializer = self.serializer_class(instance=events, many=True)
+
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+
     @swagger_auto_schema(operation_summary="Create a new event")
     def post(self, request):
         data = request.data
@@ -42,15 +51,6 @@ class EventCreateListView(generics.GenericAPIView):
 class EventDetailView(generics.GenericAPIView):
     serializer_class = serializers.EventDetailSerializer
     permission_classes = [IsAuthenticated]
-
-    @swagger_auto_schema(operation_summary="List all events created by users")
-    def get(self, request):
-
-        events = Event.objects.all().order_by('-created_at')
-
-        serializer = self.serializer_class(instance=events, many=True)
-
-        return Response(data=serializer.data, status=status.HTTP_200_OK)
 
     @swagger_auto_schema(operation_summary="Retrieve an event")
     def get(self, request, event_id):
