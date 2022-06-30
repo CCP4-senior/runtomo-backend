@@ -6,6 +6,7 @@ from pkg_resources import require
 from .models import Profile, RunnerLevel, RunnerTag
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
+from django.utils.dateparse import parse_date
 
 User=get_user_model()
 
@@ -40,10 +41,10 @@ class ProfileSerializer(serializers.ModelSerializer):
             return age_calculated  
         else:
             request = self.context.get('request', None)
-            # dob = request.profile.date_of_birth
-            # print(dob)
-            # age_calculated = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
-            return
+            dob_request = request.data.get('date_of_birth')
+            dob = parse_date(dob_request)
+            age_calculated = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
+            return age_calculated
             
 
     def _get_or_create_runner_level(self, runner_level, profile):
