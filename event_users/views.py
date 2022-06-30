@@ -22,17 +22,17 @@ class EventUserDetailView(generics.GenericAPIView):
 
     @swagger_auto_schema(operation_summary="Add user attendance")
     def post(self, request, event_id):
-
+        user = request.user
         event = get_object_or_404(Event, pk=event_id)
-        newAttendee = EventUser.objects.create(user=self, event=event)
+        newAttendee = EventUser.objects.create(user=user, event=event)
 
         serializer = self.serializer_class(instance=newAttendee)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
     @swagger_auto_schema(operation_summary="Remove user attendance")
     def delete(self, request, event_id):
-
-        userAttendance = EventUser.objects.get(user=self, event=event_id)
+        user = request.user        
+        userAttendance = EventUser.objects.get(user=user, event=event_id)
 
         userAttendance.delete()
 
