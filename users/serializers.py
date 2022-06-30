@@ -1,10 +1,12 @@
 from dataclasses import field
+import profile
 from unittest import runner
 
 from pkg_resources import require
 from .models import Profile, RunnerLevel, RunnerTag
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
+from django.utils.dateparse import parse_date
 
 User=get_user_model()
 
@@ -23,11 +25,27 @@ class RunnerTagSerializer(serializers.ModelSerializer):
 class ProfileSerializer(serializers.ModelSerializer):
     runner_tag = RunnerTagSerializer(many=True, required=False)
     runner_level = RunnerLevelSerializer(many=True, required=False)
+    age_calculated = serializers.SerializerMethodField()
 
     class Meta:
         model = Profile
-        fields = ['id', 'age', 'image', 'runner_tag','runner_level', 'date_of_birth', 'run_frequency', 'estimated10k', 'estimated5k'] 
+        fields = ['id', 'age_calculated', 'image', 'runner_tag','runner_level', 'date_of_birth', 'run_frequency', 'estimated10k', 'estimated5k'] 
         read_only_fields = ['id']
+
+    # Calcualte Age from date of birth (SerializerMethodField)
+    def get_age_calculated(self, obj):
+        import datetime
+        today = datetime.date.today()
+        if hasattr(obj, 'date_of_birth'):
+            age_calculated = today.year - obj.date_of_birth.year - ((today.month, today.day) < (obj.date_of_birth.month, obj.date_of_birth.day))
+            return age_calculated  
+        else:
+            request = self.context.get('request', None)
+            dob_request = request.data.get('date_of_birth')
+            dob = parse_date(dob_request)
+            age_calculated = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
+            return age_calculated
+            
 
     def _get_or_create_runner_level(self, runner_level, profile):
         request = self.context.get('request', None)
@@ -85,6 +103,7 @@ class ProfileSerializer(serializers.ModelSerializer):
         
         instance.save()
         return instance
+
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
