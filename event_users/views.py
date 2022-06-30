@@ -31,8 +31,8 @@ class EventUserDetailView(generics.GenericAPIView):
 
     @swagger_auto_schema(operation_summary="Remove user attendance")
     def delete(self, request, event_id):
-
-        userAttendance = EventUser.objects.get(user=self, event=event_id)
+        user = request.user        
+        userAttendance = EventUser.objects.get(user=user, event=event_id)
 
         userAttendance.delete()
 
