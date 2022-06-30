@@ -23,7 +23,7 @@ class EventUserDetailView(generics.GenericAPIView):
     @swagger_auto_schema(operation_summary="Add user attendance")
     def post(self, request, event_id):
 
-        event = get_object_or_404(Event, pk=event_id)
+        event = get_object_or_404(Event, event=event_id)
         newAttendee = EventUser.objects.create(user=self, event=event)
 
         serializer = self.serializer_class(instance=newAttendee)
