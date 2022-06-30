@@ -35,8 +35,16 @@ class ProfileSerializer(serializers.ModelSerializer):
     def get_age_calculated(self, obj):
         import datetime
         today = datetime.date.today()
-        age_calculated = today.year - obj.date_of_birth.year - ((today.month, today.day) < (obj.date_of_birth.month, obj.date_of_birth.day))
-        return age_calculated
+        if hasattr(obj, 'date_of_birth'):
+            age_calculated = today.year - obj.date_of_birth.year - ((today.month, today.day) < (obj.date_of_birth.month, obj.date_of_birth.day))
+            return age_calculated  
+        else:
+            request = self.context.get('request', None)
+            # dob = request.profile.date_of_birth
+            # print(dob)
+            # age_calculated = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
+            return
+            
 
     def _get_or_create_runner_level(self, runner_level, profile):
         request = self.context.get('request', None)

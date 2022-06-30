@@ -6,7 +6,6 @@ User=get_user_model()
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    age = models.IntegerField(default=1)
     runner_level = models.ManyToManyField('RunnerLevel')
     runner_tag = models.ManyToManyField('RunnerTag')
     image = models.CharField(max_length=300, null=True, blank=True)
