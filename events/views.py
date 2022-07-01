@@ -116,3 +116,17 @@ class UserEventDetails(generics.GenericAPIView):
         serializer = self.serializer_class(instance=event)
 
         return Response(data=serializer.data, status=status.HTTP_200_OK)
+
+class ParticipantDetails(generics.GenericAPIView):
+    serializer_class = serializers.ParticipantsSerializer
+    permission_classes = [IsAuthenticated]
+    @swagger_auto_schema(operation_summary="assign self as participant to an event")
+    def post(self, request, event_id):
+        user = request.user
+
+        event = Event.objects.get(pk=event_id)
+
+        serializer = self.serializer_class(participants=user, many=True)
+
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+

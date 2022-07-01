@@ -18,8 +18,14 @@ class EventCreationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model=Event
-        fields = ['id', 'creator', 'title', 'location', 'created_at', 'ward', 'date', 'time', 'running_duration', 'description', 'image', 'lat', 'long']
+        fields = ['id', 'creator', 'title', 'location', 'created_at', 'ward', 'date', 'time', 'running_duration', 'description', 'image', 'lat', 'long', 'participants']
         depth = 1
+
+class ParticipantsSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'email', 'profile')
 
 class EventDetailSerializer(serializers.ModelSerializer):
 
@@ -28,8 +34,9 @@ class EventDetailSerializer(serializers.ModelSerializer):
     location = serializers.CharField(max_length=255)
     created_at = serializers.DateTimeField('date created')
     ward = serializers.CharField(source='ward.ward_name', default=None)
-
+    participants = ParticipantsSerializer(many=True, read_only=True)
     class Meta:
         model=Event
-        fields = ['id', 'creator', 'title', 'location', 'ward', 'created_at', 'date', 'time', 'running_duration', 'description', 'image', 'lat', 'long'] 
+        fields = ['id', 'creator', 'title', 'location', 'ward', 'created_at', 'date', 'time', 'running_duration', 'description', 'image', 'lat', 'long', 'participants'] 
         depth = 1
+

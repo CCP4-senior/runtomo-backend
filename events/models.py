@@ -22,3 +22,4 @@ class Event(models.Model):
     running_duration = models.IntegerField(default=0)
     description = models.TextField(max_length=255, null=True)
     image = models.CharField(max_length=300, null=True, blank=True)
+    participants = models.ForeignKey(User, null=True, related_name='participants', on_delete=models.CASCADE)
