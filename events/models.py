@@ -10,7 +10,7 @@ User=get_user_model()
 
 class Event(models.Model):
 
-    creator = models.ForeignKey(User, on_delete=models.CASCADE)
+    creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name="creator")
     title = models.CharField(max_length=255)
     location = models.CharField(max_length=255)
     long = models.DecimalField(max_digits=22, decimal_places=16, blank=True, null=True)
@@ -22,4 +22,4 @@ class Event(models.Model):
     running_duration = models.IntegerField(default=0)
     description = models.TextField(max_length=255, null=True)
     image = models.CharField(max_length=300, null=True, blank=True)
-    participants = models.ForeignKey(User, null=True, related_name='participants', on_delete=models.CASCADE)
+    participants = models.ForeignKey(User, on_delete=models.CASCADE, related_name="participants", null=True)

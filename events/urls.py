@@ -7,5 +7,5 @@ urlpatterns = [
     path('<int:event_id>/', views.EventDetailView.as_view(), name='event_detail'),
     path('user/<int:user_id>/events/', views.UserEventsView.as_view(), name='users_events'),
     path('user/<int:user_id>/events/<int:event_id>/', views.UserEventDetails.as_view(), name='user_specific_event'),
-    path('add_participant', views.ParticipantDetails.as_view(), name='participant')
+    path('add_participant/<int:event_id>/', views.ParticipantDetails.as_view(), name='add_participant')
 ]
