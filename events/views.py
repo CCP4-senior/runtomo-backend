@@ -130,9 +130,9 @@ class ParticipantDetails(generics.GenericAPIView):
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
     @swagger_auto_schema(operation_summary="Assign logged in user as a participant")
-    def post(self, request, event_id):
+    def post(self, request, event_id, user_id):
 
-        user = request.user
+        user = User.objects.get(pk=user_id)
         event = Event.objects.get(pk=event_id)
         data = event.participants.add(user)
 
