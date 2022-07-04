@@ -12,7 +12,7 @@ from django.utils.decorators import method_decorator
 User = get_user_model()
 
 class UserListView(generics.GenericAPIView):
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAuthenticated]
     serializer_class = serializers.UserSerializer
 
     @swagger_auto_schema(operation_summary="List all Users")
