@@ -14,7 +14,6 @@ class Profile(models.Model):
     run_frequency = models.CharField(max_length=255, null=True)
     estimated10k = models.CharField(max_length=255, null=True)
     estimated5k = models.CharField(max_length=255, null=True)
-    participation = models.ManyToManyField(Event, related_name='participation')
 
     def __str__(self):
         return f'{self.user} Profile'

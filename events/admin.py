@@ -9,4 +9,4 @@ class EventAdmin(admin.ModelAdmin):
     list_filter = ['location', 'created_at']
 
     def list_participants(self, obj):
-        return "n".join([p.participants for p in obj.participants.all()])
+        return "\n".join([p.username for p in obj.participants.all()])
