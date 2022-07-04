@@ -1,7 +1,7 @@
 from dataclasses import field
 import profile
 from unittest import runner
-
+from events.models import Event
 from pkg_resources import require
 from .models import Profile, RunnerLevel, RunnerTag
 from django.contrib.auth import get_user_model
@@ -9,6 +9,12 @@ from rest_framework import serializers
 from django.utils.dateparse import parse_date
 
 User=get_user_model()
+
+class RunnerParticipation(serializers.ModelSerializer):
+    participation = serializers.PrimaryKeyRelatedField(read_only=True, many=True)    
+    class Meta:
+        model = Event
+        fields = ['id', 'creator', 'title', 'location', 'created_at', 'ward', 'date', 'time', 'running_duration', 'description', 'image', 'lat', 'long', 'participants']
 
 class RunnerLevelSerializer(serializers.ModelSerializer):
     class Meta:
@@ -106,12 +112,14 @@ class ProfileSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
+    participation = RunnerParticipation(many=True)
     class Meta:
         model = User
-        fields = ['id', 'username', 'email']
+        fields = ['id', 'username', 'email', 'participation']
 
 class UserDetailSerializer(serializers.ModelSerializer):
     profile = ProfileSerializer(required=True)
+    participation = RunnerParticipation(many=True)
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'profile']
+        fields = ['id', 'username', 'email', 'profile', 'participation']
