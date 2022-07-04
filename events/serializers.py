@@ -12,15 +12,18 @@ class creatorSerializer(serializers.ModelSerializer):
         fields = ['id', 'username', 'email']
 
 class ParticipantsSerializer(serializers.ModelSerializer):
-    participants = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
+    participants = serializers.PrimaryKeyRelatedField(read_only=True, many=True)
     class Meta:
         model = User
+        fields = ['id', 'username', 'email']
+        depth = 1
 
 class EventCreationSerializer(serializers.ModelSerializer):
 
     title = serializers.CharField(max_length=255)
     location = serializers.CharField(max_length=255)
     ward = serializers.SlugRelatedField(queryset = Ward.objects.all(),slug_field = 'ward_name')
+    participants = ParticipantsSerializer(many=True)
 
     class Meta:
         model=Event

@@ -119,24 +119,27 @@ class UserEventDetails(generics.GenericAPIView):
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 class ParticipantDetails(generics.GenericAPIView):
-    serializer_class = serializers.ParticipantsSerializer
+    serializer_class = serializers.EventCreationSerializer
     permission_classes = [IsAuthenticated]
-    # @swagger_auto_schema(operation_summary="Find all participants of an event")
-    # def get(self, request, event_id):
+    @swagger_auto_schema(operation_summary="Find all participants of an event")
+    def get(self, request, event_id):
 
-    #     participants = Event.objects.get(pk=event_id)
+        queryset = Event.objects.get(pk=event_id)
+        serializer = self.serializer_class(instance=queryset)
 
-    #     return 
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
 
     @swagger_auto_schema(operation_summary="Assign logged in user as a participant")
     def post(self, request, event_id):
 
         user = request.user
         event = Event.objects.get(pk=event_id)
-        serializer = self.serializer_class(instance=event)
-        if serializer.is_valid():
-            serializer.save()
+        # data = event.participants
 
-            return Response(data=serializer.data, status=status.HTTP_200_OK)
+        # serializer = self.serializer_class(data=data)
+        # if serializer.is_valid():
+        #     serializer.save()
+
+        #     return Response(data=serializer.data, status=status.HTTP_200_OK)
                 
-        return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        # return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
