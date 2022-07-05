@@ -21,6 +21,7 @@ urlpatterns = [
    path('auth/', include('authentication.urls')),
    path('auth/', include('djoser.urls.jwt')),
    path('events/', include('events.urls')),
+   path('event_comments/', include('event_comments.urls')),
    path('users/', include('users.urls')),
    path('events/', include('events.urls')),
    path('wards/', include('wards.urls')),
