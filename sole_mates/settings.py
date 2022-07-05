@@ -35,7 +35,7 @@ INSTALLED_APPS = [
     'events.apps.EventsConfig',
     'users.apps.UsersConfig',
     'wards.apps.WardsConfig',
-    'event_comments.apps.EventCommentsConfig'
+    'event_comments',
 
     #third_party_apps
     'rest_framework',
