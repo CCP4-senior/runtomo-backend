@@ -36,10 +36,9 @@ class EventDetailSerializer(serializers.ModelSerializer):
     creator = creatorSerializer(read_only=True)
     location = serializers.CharField(max_length=255)
     created_at = serializers.DateTimeField('date created', read_only=True)
-    ward = serializers.CharField(source='ward.ward_name', default=None)
+    ward = serializers.SlugRelatedField(queryset = Ward.objects.all(),slug_field = 'ward_name')
 
     class Meta:
         model=Event
         fields = ['id', 'creator', 'title', 'location', 'ward', 'created_at', 'date', 'time', 'running_duration', 'description', 'image', 'lat', 'long', 'participants'] 
         depth = 1
-
