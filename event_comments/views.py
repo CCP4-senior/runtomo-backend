@@ -4,8 +4,10 @@ from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from drf_yasg.utils import swagger_auto_schema
+from django.utils.decorators import method_decorator
 
 from event_comments.models import EventComments
+from . import permissions
 from . import serializers
 from events.models import Event
 
@@ -15,11 +17,10 @@ class EventCommentCreate(generics.CreateAPIView):
     serializer_class = serializers.EventCommentsSerializer
     permission_classes = [IsAuthenticated]
 
-    @swagger_auto_schema(operation_summary="Get all comments")
     def get_queryset(self):
         return EventComments.objects.all()
 
-    @swagger_auto_schema(operation_summary="Create a comment for an event")
+    @swagger_auto_schema(operation_summary="Create a comment for an event by event id")
     def perform_create(self, serializer):
         pk = self.kwargs.get('pk')
         event = Event.objects.get(pk=pk)
@@ -37,6 +38,12 @@ class EventCommentCreate(generics.CreateAPIView):
 class EventCommentList(generics.ListAPIView):
     serializer_class = serializers.EventCommentsSerializer
 
+    @swagger_auto_schema(operation_summary="Get comments by event id")
     def get_queryset(self):
         pk = self.kwargs['pk']
         return EventComments.objects.filter(event=pk)
+
+class CommentDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = EventComments.objects.all()
+    serializer_class = serializers.EventCommentsSerializer
+    permission_classes = [permissions.IsCommentUserOrReadOnly]
