@@ -33,7 +33,7 @@ class EventCreateListView(generics.GenericAPIView):
         user = request.user
 
         if serializer.is_valid():
-            serializer.save(creator=user, participant=user)
+            serializer.save(creator=user)
 
             return Response(data=serializer.data, status=status.HTTP_201_CREATED)
 
