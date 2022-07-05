@@ -12,10 +12,9 @@ class creatorSerializer(serializers.ModelSerializer):
         fields = ['id', 'username', 'email']
 
 class ParticipantsSerializer(serializers.ModelSerializer):
-    participants = serializers.PrimaryKeyRelatedField(read_only=True, many=True)
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'participants']
+        fields = ['id', 'username', 'email']
         depth = 1
 
 class EventCreationSerializer(serializers.ModelSerializer):
