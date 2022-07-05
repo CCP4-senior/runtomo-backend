@@ -15,7 +15,7 @@ class ParticipantsSerializer(serializers.ModelSerializer):
     participants = serializers.PrimaryKeyRelatedField(read_only=True, many=True)
     class Meta:
         model = User
-        fields = ['id', 'username', 'email']
+        fields = ['id', 'username', 'email', 'participants']
         depth = 1
 
 class EventCreationSerializer(serializers.ModelSerializer):
