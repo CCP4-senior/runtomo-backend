@@ -36,7 +36,7 @@ class EventDetailSerializer(serializers.ModelSerializer):
     creator = creatorSerializer(read_only=True)
     location = serializers.CharField(max_length=255)
     created_at = serializers.DateTimeField('date created', read_only=True)
-    ward = serializers.CharField(source='ward.ward_name', default=None, read_only=True)
+    ward = serializers.CharField(source='ward.ward_name', default=None)
 
     class Meta:
         model=Event
