@@ -1,6 +1,7 @@
 from django.contrib.postgres.fields import ArrayField
 from django.db import models
 from django.contrib.auth import get_user_model
+from events.models import Event
 
 User=get_user_model()
 

@@ -1,7 +1,6 @@
 from dataclasses import field
 import profile
 from unittest import runner
-
 from pkg_resources import require
 from .models import Profile, RunnerLevel, RunnerTag
 from django.contrib.auth import get_user_model
