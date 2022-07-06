@@ -30,11 +30,10 @@ class UserCreationSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         # create user
-        request_data = dict(self.get_serializer_context())
         user = User.objects.create(
             username = validated_data['username'],
             email = validated_data['email'], 
-            image = request_data['image'][0]
+            image = validated_data['image']
         )
 
         user.set_password(validated_data['password'])
@@ -45,10 +44,11 @@ class UserCreationSerializer(serializers.ModelSerializer):
 class UserUpdateSerializer(serializers.ModelSerializer):
     username = serializers.CharField(max_length=25, allow_null=True, allow_blank=True)
     email = serializers.EmailField(max_length=100, allow_null=False, allow_blank=False)
+    image = serializers.CharField(max_length=300, allow_null=True, allow_blank=True)
 
     class Meta:
         model=User
-        fields=['username', 'email']
+        fields=['username', 'email', 'image']
 
     def validate_email(self, value):
         user = self.context['request'].user
@@ -70,6 +70,7 @@ class UserUpdateSerializer(serializers.ModelSerializer):
 
         instance.email = validated_data['email']
         instance.username = validated_data['username']
+        instance.image = validated_data['image']
 
         instance.save()
 
