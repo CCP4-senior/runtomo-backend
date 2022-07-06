@@ -9,7 +9,7 @@ User = get_user_model()
 class creatorSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username', 'email']
+        fields = ['id', 'username', 'email', 'image']
 
 class ParticipantsSerializer(serializers.Serializer):
     class Meta:
@@ -22,6 +22,9 @@ class EventCreationSerializer(serializers.ModelSerializer):
     title = serializers.CharField(max_length=255)
     location = serializers.CharField(max_length=255)
     ward = serializers.SlugRelatedField(queryset = Ward.objects.all(),slug_field = 'ward_name')
+    creator = creatorSerializer(read_only=True)
+    participants = ParticipantsSerializer(read_only=True)
+
 
 
     class Meta:
@@ -36,6 +39,8 @@ class EventDetailSerializer(serializers.ModelSerializer):
     location = serializers.CharField(max_length=255)
     created_at = serializers.DateTimeField('date created', read_only=True)
     ward = serializers.SlugRelatedField(queryset = Ward.objects.all(),slug_field = 'ward_name')
+    participants = ParticipantsSerializer(read_only=True)
+
 
     class Meta:
         model=Event
