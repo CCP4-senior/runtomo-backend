@@ -28,7 +28,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Profile
-        fields = ['id', 'age_calculated', 'image', 'runner_tag','runner_level', 'date_of_birth', 'run_frequency', 'estimated10k', 'estimated5k'] 
+        fields = ['id', 'age_calculated', 'image', 'runner_tag','runner_level', 'date_of_birth', 'run_frequency', 'estimated10k', 'estimated5k', 'description'] 
         read_only_fields = ['id']
 
     # Calcualte Age from date of birth (SerializerMethodField)
