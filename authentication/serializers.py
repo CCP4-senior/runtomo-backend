@@ -43,7 +43,7 @@ class UserCreationSerializer(serializers.ModelSerializer):
 
 class UserUpdateSerializer(serializers.ModelSerializer):
     username = serializers.CharField(max_length=25, allow_null=True, allow_blank=True)
-    email = serializers.EmailField(max_length=100, allow_null=False, allow_blank=False)
+    email = serializers.EmailField(max_length=100, allow_null=True, allow_blank=True)
     image = serializers.CharField(max_length=300, allow_null=True, allow_blank=True)
 
     class Meta:
@@ -68,9 +68,8 @@ class UserUpdateSerializer(serializers.ModelSerializer):
         if user.pk != instance.pk:
             raise serializers.ValidationError({"authorize": "You dont have permission for this user."})
 
-        instance.email = validated_data['email']
-        instance.username = validated_data['username']
-        instance.image = validated_data['image']
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
 
         instance.save()
 
