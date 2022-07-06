@@ -1,6 +1,6 @@
 from multiprocessing import Event
 from django.shortcuts import render
-from rest_framework import generics, status
+from rest_framework import generics, status, viewsets, mixins
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from drf_yasg.utils import swagger_auto_schema
@@ -13,6 +13,9 @@ from events.models import Event
 
 # Create your views here.
 
+@method_decorator(name='create', decorator=swagger_auto_schema(
+    operation_summary="Create a comment for an event by event id"
+))
 class EventCommentCreate(generics.CreateAPIView):
     serializer_class = serializers.EventCommentsSerializer
     permission_classes = [IsAuthenticated]
@@ -20,7 +23,7 @@ class EventCommentCreate(generics.CreateAPIView):
     def get_queryset(self):
         return EventComments.objects.all()
 
-    @swagger_auto_schema(operation_summary="Create a comment for an event by event id")
+    @swagger_auto_schema(operation_description="sth")
     def perform_create(self, serializer):
         pk = self.kwargs.get('pk')
         event = Event.objects.get(pk=pk)

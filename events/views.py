@@ -39,7 +39,6 @@ class EventCreateListView(generics.GenericAPIView):
 
         return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
 class EventsDetailViewAll(generics.GenericAPIView):
     serializer_class=serializers.EventDetailSerializer
     permission_classes = [IsAuthenticated]
