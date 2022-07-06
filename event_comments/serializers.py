@@ -6,8 +6,8 @@ User=get_user_model()
 class CommentUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username', 'email']
-        read_only_fields = ['id', 'username','email']
+        fields = ['id', 'username', 'email', 'image']
+        read_only_fields = ['id', 'username','email', 'image']
 
 class EventCommentsSerializer(serializers.ModelSerializer):
     comment_user = CommentUserSerializer(read_only=True)

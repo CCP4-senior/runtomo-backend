@@ -9,10 +9,11 @@ class UserCreationSerializer(serializers.ModelSerializer):
     username = serializers.CharField(max_length=25, allow_null=False, allow_blank=False)
     email = serializers.EmailField(max_length=100, allow_null=False, allow_blank=False)
     password = serializers.CharField(min_length=8, write_only=True)
+    image = serializers.CharField(max_length=300, allow_null=True, allow_blank=True)
 
     class Meta:
         model=User
-        fields=['username', 'email', 'password']
+        fields=['username', 'email', 'password', 'image']
 
     def validate(self, attrs):
         username_exists = User.objects.filter(username = attrs['username']).exists()
@@ -31,7 +32,8 @@ class UserCreationSerializer(serializers.ModelSerializer):
         # create user
         user = User.objects.create(
             username = validated_data['username'],
-            email = validated_data['email'],     
+            email = validated_data['email'], 
+            image = validated_data['image']
         )
 
         user.set_password(validated_data['password'])
@@ -41,11 +43,12 @@ class UserCreationSerializer(serializers.ModelSerializer):
 
 class UserUpdateSerializer(serializers.ModelSerializer):
     username = serializers.CharField(max_length=25, allow_null=True, allow_blank=True)
-    email = serializers.EmailField(max_length=100, allow_null=False, allow_blank=False)
+    email = serializers.EmailField(max_length=100, allow_null=True, allow_blank=True)
+    image = serializers.CharField(max_length=300, allow_null=True, allow_blank=True)
 
     class Meta:
         model=User
-        fields=['username', 'email']
+        fields=['username', 'email', 'image']
 
     def validate_email(self, value):
         user = self.context['request'].user
@@ -65,8 +68,8 @@ class UserUpdateSerializer(serializers.ModelSerializer):
         if user.pk != instance.pk:
             raise serializers.ValidationError({"authorize": "You dont have permission for this user."})
 
-        instance.email = validated_data['email']
-        instance.username = validated_data['username']
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
 
         instance.save()
 
