@@ -132,12 +132,12 @@ class ParticipantDetails(generics.GenericAPIView):
     def post(self, request, event_id, user_id):
 
         user = User.objects.get(pk=user_id)
-        data = Event.objects.get(pk=event_id)
-        # data = event.participants.add(user)
+        event = Event.objects.get(pk=event_id)
+        data = event.participants.add(user)
 
         serializer = self.serializer_class(data=data)
         if serializer.is_valid():
-            serializer.save(participants=user)
+            serializer.save()
 
             return Response(data=serializer.data, status=status.HTTP_200_OK)
                 
