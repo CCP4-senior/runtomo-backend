@@ -114,3 +114,6 @@ class UserDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'username', 'email', 'image', 'profile']
+
+
+#comments
