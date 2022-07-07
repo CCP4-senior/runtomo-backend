@@ -1,16 +1,14 @@
-# from asyncio.windows_events import NULL
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import get_object_or_404
 from rest_framework import generics, status
 from rest_framework.response import Response
 from . import serializers
 from drf_yasg.utils import swagger_auto_schema
 from .models import Event
-from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, IsAdminUser
+from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
-# Create your views here.
 class HelloEventsView(generics.GenericAPIView):
     @swagger_auto_schema(operation_summary="Hello events page!")
     def get(self, request):
@@ -55,7 +53,7 @@ class EventCreateListView(generics.GenericAPIView):
     @swagger_auto_schema(operation_summary="Remove user from event participants")
     def delete(self, request, event_id, user_id):
         user = User.objects.get(pk=user_id) 
-               
+
         event = get_object_or_404(Event, pk=event_id)
 
         event.participants.remove(user)
