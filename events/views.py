@@ -15,7 +15,6 @@ class HelloEventsView(generics.GenericAPIView):
         return Response(data={"message":"Hello Events"},status=status.HTTP_200_OK)
 
 class EventCreateListView(generics.GenericAPIView):
-    
     serializer_class = serializers.EventCreationSerializer
     queryset = Event.objects.all()
     permission_classes = [IsAuthenticated]
@@ -39,16 +38,10 @@ class EventCreateListView(generics.GenericAPIView):
 
         event = Event.objects.get(pk=event_id)
 
-        data = event.participants.add(user)
+        event.participants.add(user)
 
-        serializer = self.serializer_class(data=data)
-
-        if serializer.is_valid():
-            serializer.save()
-
-            return Response(data=serializer.data, status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_200_OK)
                 
-        return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     @swagger_auto_schema(operation_summary="Remove user from event participants")
     def delete(self, request, event_id, user_id):
@@ -118,7 +111,6 @@ class UserEventsView(generics.GenericAPIView):
         serializer = self.serializer_class(instance=events, many=True)
 
         return Response(data=serializer.data, status=status.HTTP_200_OK)
-
 
 class UserEventDetails(generics.GenericAPIView):
     serializer_class = serializers.EventDetailSerializer
