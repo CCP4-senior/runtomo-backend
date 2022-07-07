@@ -1,4 +1,4 @@
-from asyncio.windows_events import NULL
+# from asyncio.windows_events import NULL
 from django.shortcuts import render, get_object_or_404
 from rest_framework import generics, status
 from rest_framework.response import Response
@@ -38,7 +38,6 @@ class EventCreateListView(generics.GenericAPIView):
             return Response(data=serializer.data, status=status.HTTP_201_CREATED)
 
         return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
 class EventsDetailViewAll(generics.GenericAPIView):
     serializer_class=serializers.EventDetailSerializer
@@ -131,12 +130,12 @@ class ParticipantDetails(generics.GenericAPIView):
 
     @swagger_auto_schema(operation_summary="Assign logged in user as a participant")
     def post(self, request, event_id, user_id):
-
         user = User.objects.get(pk=user_id)
         event = Event.objects.get(pk=event_id)
         data = event.participants.add(user)
-
+        print(data)
         serializer = self.serializer_class(data=data)
+
         if serializer.is_valid():
             serializer.save()
 

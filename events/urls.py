@@ -4,7 +4,7 @@ from . import views
 
 
 urlpatterns = [
-    path('create_event', views.EventCreateListView.as_view(), name='create_event'),
+    path('create_event/', views.EventCreateListView.as_view(), name='create_event'),
     path('', views.EventsDetailViewAll.as_view(), name='Events'),
     path('<int:event_id>/', views.EventDetailView.as_view(), name='event_detail'),
     path('user/<int:user_id>/events/', views.UserEventsView.as_view(), name='users_events'),

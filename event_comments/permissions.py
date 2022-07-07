@@ -1,5 +1,3 @@
-
-
 from rest_framework import permissions
 
 class IsCommentUserOrReadOnly(permissions.BasePermission):

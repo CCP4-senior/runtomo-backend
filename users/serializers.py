@@ -28,7 +28,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Profile
-        fields = ['id', 'age_calculated', 'image', 'runner_tag','runner_level', 'date_of_birth', 'run_frequency', 'estimated10k', 'estimated5k'] 
+        fields = ['id', 'age_calculated', 'image', 'runner_tag','runner_level', 'date_of_birth', 'run_frequency', 'estimated10k', 'estimated5k', 'description'] 
         read_only_fields = ['id']
 
     # Calcualte Age from date of birth (SerializerMethodField)
@@ -107,10 +107,13 @@ class ProfileSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username', 'email']
+        fields = ['id', 'username', 'email', 'image']
 
 class UserDetailSerializer(serializers.ModelSerializer):
     profile = ProfileSerializer(required=True)
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'profile']
+        fields = ['id', 'username', 'email', 'image', 'profile']
+
+
+#comments
