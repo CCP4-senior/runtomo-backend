@@ -31,5 +31,6 @@ urlpatterns = [
    path('locations/', include('locations.urls')),
    path('location_types/', include('location_types.urls')),
    path('event_users/', include('event_users.urls')),
+   path('pointsofinterest/', include('pointsofinterest.urls')),
 ]
 
