@@ -16,7 +16,6 @@ class HelloEventsView(generics.GenericAPIView):
     def get(self, request):
         return Response(data={"message":"Hello Events"},status=status.HTTP_200_OK)
 
-
 class EventCreateListView(generics.GenericAPIView):
     
     serializer_class = serializers.EventCreationSerializer
@@ -55,8 +54,6 @@ class EventDetailView(generics.GenericAPIView):
 
     @swagger_auto_schema(operation_summary="Retrieve an event")
     def get(self, request, event_id):
-        
-        #get event by primary key, which is event_id
         event = get_object_or_404(Event, pk=event_id)
 
         serializer = self.serializer_class(instance=event)
@@ -65,10 +62,8 @@ class EventDetailView(generics.GenericAPIView):
 
     @swagger_auto_schema(operation_summary="Update an event by event_id")
     def put(self, request, event_id):
-        data = request.data
-
-        #get event by primary key, which is event_id
         event = get_object_or_404(Event, pk=event_id)
+        data = request.data
 
         serializer = self.serializer_class(data=data, instance=event)
 
