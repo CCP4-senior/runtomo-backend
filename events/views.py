@@ -49,6 +49,15 @@ class EventCreateListView(generics.GenericAPIView):
                 
         return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    @swagger_auto_schema(operation_summary="Remove user from event participants")
+    def delete(self, request, event_id, user_id):
+        user = User.objects.get(pk=user_id)        
+        event = get_object_or_404(Event, pk=event_id)
+
+        event.participants.remove(user)
+
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
 class EventsDetailViewAll(generics.GenericAPIView):
     serializer_class=serializers.EventDetailSerializer
     permission_classes = [IsAuthenticated]
@@ -122,18 +131,3 @@ class UserEventDetails(generics.GenericAPIView):
         serializer = self.serializer_class(instance=event)
 
         return Response(data=serializer.data, status=status.HTTP_200_OK)
-
-class ParticipantDetails(generics.GenericAPIView):
-    serializer_class = serializers.EventCreationSerializer
-    permission_classes = [IsAuthenticated]
-
-
-    
-    @swagger_auto_schema(operation_summary="Remove user from event participants")
-    def delete(self, request, event_id, user_id):
-        user = User.objects.get(pk=user_id)        
-        event = get_object_or_404(Event, pk=event_id)
-        participant = event.participants.remove(user)
-        event.participants.remove(participant)
-
-        return Response(status=status.HTTP_204_NO_CONTENT)
