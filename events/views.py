@@ -24,10 +24,9 @@ class EventCreateListView(generics.GenericAPIView):
 
     @swagger_auto_schema(operation_summary="Create a new event")
     def post(self, request):
-        data = request.data
         user = request.user
 
-        serializer = self.serializer_class(data=data)
+        serializer = self.serializer_class(data=request.data)
 
         if serializer.is_valid():
             serializer.save(creator=user)
@@ -63,9 +62,9 @@ class EventDetailView(generics.GenericAPIView):
     @swagger_auto_schema(operation_summary="Update an event by event_id")
     def put(self, request, event_id):
         event = get_object_or_404(Event, pk=event_id)
-        data = request.data
+        # data = request.data
 
-        serializer = self.serializer_class(data=data, instance=event)
+        serializer = self.serializer_class(data=request.data, instance=event)
 
         if serializer.is_valid():
             serializer.save()
