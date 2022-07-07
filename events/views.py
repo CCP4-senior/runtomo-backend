@@ -144,9 +144,9 @@ class ParticipantDetails(generics.GenericAPIView):
     
     @swagger_auto_schema(operation_summary="Remove user from event participants")
     def delete(self, request, event_id, user_id):
-
+        user = User.objects.get(pk=user_id)        
         event = get_object_or_404(Event, pk=event_id)
-
-        participant = event.participants.filter(id=user_id)
-        print(participant)
+        participant = event.participants.remove(user)
+        event.participants.remove(participant)
+        
         return Response(status=status.HTTP_204_NO_CONTENT)
