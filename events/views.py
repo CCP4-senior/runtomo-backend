@@ -26,11 +26,9 @@ class EventCreateListView(generics.GenericAPIView):
     @swagger_auto_schema(operation_summary="Create a new event")
     def post(self, request):
         data = request.data
+        user = request.user
 
         serializer = self.serializer_class(data=data)
-
-        #currently logged in user credentials if logged in
-        user = request.user
 
         if serializer.is_valid():
             serializer.save(creator=user)
@@ -148,5 +146,5 @@ class ParticipantDetails(generics.GenericAPIView):
         event = get_object_or_404(Event, pk=event_id)
         participant = event.participants.remove(user)
         event.participants.remove(participant)
-        
+
         return Response(status=status.HTTP_204_NO_CONTENT)
