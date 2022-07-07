@@ -35,6 +35,20 @@ class EventCreateListView(generics.GenericAPIView):
 
         return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    @swagger_auto_schema(operation_summary="Assign user as a participant")
+    def post(self, request, event_id, user_id):
+        user = User.objects.get(pk=user_id)
+        event = Event.objects.get(pk=event_id)
+        data = event.participants.add(user)
+        serializer = self.serializer_class(data=data)
+
+        if serializer.is_valid():
+            serializer.save()
+
+            return Response(data=serializer.data, status=status.HTTP_200_OK)
+                
+        return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 class EventsDetailViewAll(generics.GenericAPIView):
     serializer_class=serializers.EventDetailSerializer
     permission_classes = [IsAuthenticated]
@@ -113,19 +127,7 @@ class ParticipantDetails(generics.GenericAPIView):
     serializer_class = serializers.EventCreationSerializer
     permission_classes = [IsAuthenticated]
 
-    @swagger_auto_schema(operation_summary="Assign user as a participant")
-    def post(self, request, event_id, user_id):
-        user = User.objects.get(pk=user_id)
-        event = Event.objects.get(pk=event_id)
-        data = event.participants.add(user)
-        serializer = self.serializer_class(data=data)
 
-        if serializer.is_valid():
-            serializer.save()
-
-            return Response(data=serializer.data, status=status.HTTP_200_OK)
-                
-        return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     @swagger_auto_schema(operation_summary="Remove user from event participants")
     def delete(self, request, event_id, user_id):
