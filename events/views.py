@@ -38,8 +38,11 @@ class EventCreateListView(generics.GenericAPIView):
     @swagger_auto_schema(operation_summary="Assign user as a participant")
     def post(self, request, event_id, user_id):
         user = User.objects.get(pk=user_id)
+
         event = Event.objects.get(pk=event_id)
+
         data = event.participants.add(user)
+
         serializer = self.serializer_class(data=data)
 
         if serializer.is_valid():
@@ -51,7 +54,8 @@ class EventCreateListView(generics.GenericAPIView):
 
     @swagger_auto_schema(operation_summary="Remove user from event participants")
     def delete(self, request, event_id, user_id):
-        user = User.objects.get(pk=user_id)        
+        user = User.objects.get(pk=user_id) 
+               
         event = get_object_or_404(Event, pk=event_id)
 
         event.participants.remove(user)
