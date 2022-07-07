@@ -62,7 +62,6 @@ class EventDetailView(generics.GenericAPIView):
     @swagger_auto_schema(operation_summary="Update an event by event_id")
     def put(self, request, event_id):
         event = get_object_or_404(Event, pk=event_id)
-        # data = request.data
 
         serializer = self.serializer_class(data=request.data, instance=event)
 
@@ -99,6 +98,7 @@ class UserEventsView(generics.GenericAPIView):
 class UserEventDetails(generics.GenericAPIView):
     serializer_class = serializers.EventDetailSerializer
     permission_classes = [IsAuthenticated]
+
     @swagger_auto_schema(operation_summary="Get a specific event by a specific user")
     def get(self, request, user_id, event_id):
         user = User.objects.get(pk=user_id)
@@ -112,13 +112,6 @@ class UserEventDetails(generics.GenericAPIView):
 class ParticipantDetails(generics.GenericAPIView):
     serializer_class = serializers.EventCreationSerializer
     permission_classes = [IsAuthenticated]
-    @swagger_auto_schema(operation_summary="Find all participants of an event")
-    def get(self, request, event_id):
-
-        queryset = Event.objects.get(pk=event_id)
-        serializer = self.serializer_class(instance=queryset)
-
-        return Response(data=serializer.data, status=status.HTTP_200_OK)
 
     @swagger_auto_schema(operation_summary="Assign user as a participant")
     def post(self, request, event_id, user_id):
