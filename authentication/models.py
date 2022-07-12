@@ -11,7 +11,7 @@ class CustomUserManager(BaseUserManager):
         if not email:
             raise ValueError(_("Email should be provided"))
 
-        if not email:
+        if not image:
             pass
 
         email=self.normalize_email(email)
