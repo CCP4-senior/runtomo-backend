@@ -11,6 +11,9 @@ class CustomUserManager(BaseUserManager):
         if not email:
             raise ValueError(_("Email should be provided"))
 
+        if not email:
+            pass
+
         email=self.normalize_email(email)
 
         new_user=self.model(email=email, image = image, **extra_fields)
